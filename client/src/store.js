@@ -37,7 +37,7 @@ export default new Vuex.Store({
     },
 
     getAllarticles: function (context) {
-      axios.post('http://localhost:3000/articles/all')
+      axios.get('http://localhost:3000/articles/all')
         .then((res) => {
           let articles = res.data.articles
           context.commit('setAllArticles', articles)
