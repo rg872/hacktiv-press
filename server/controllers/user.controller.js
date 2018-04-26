@@ -11,7 +11,7 @@ module.exports = {
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
-            article: []
+            articles: []
         }
         // res.status(200).send('yes')
         User.create(new_user).
@@ -20,8 +20,7 @@ module.exports = {
             let token = jwt.sign({ email: user.email }, process.env.SECRET);
             res.status(200).json({
                 message:'User successfuly registered',
-                token: token,
-                user: user
+                token: token
             });
         })
         .catch((err)=>{
@@ -53,8 +52,7 @@ module.exports = {
 
               res.status(200).json({
                 message:'Succeed login',
-                token : token,
-                user: user
+                token : token
               });
             } else {
               res.status(400).json({

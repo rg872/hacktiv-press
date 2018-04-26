@@ -24,7 +24,7 @@ module.exports = {
                 .then((user)=>{
                     res.status(200).json({
                         message: 'success create new article',
-                        article: article
+                        articles: article
                     })
                 })                               
             })
@@ -40,10 +40,10 @@ module.exports = {
 
     getAllArticle: function(req, res){
         Article.find({})
-        .then((articles)=>{
+        .then((article)=>{
             res.status(200).json({
                 message: 'success get all article',
-                articles: articles
+                articles: article
             })
         })
         .catch((err)=>{
@@ -91,7 +91,7 @@ module.exports = {
     getArticleByCategory: function(req, res){
         
         Article.find({category: req.params.category})
-        .then((user)=>{
+        .then((article)=>{
             res.status(200).json({
                 message: 'success get articles',
                 articles: article
@@ -106,7 +106,7 @@ module.exports = {
 
     updateArticleById: function(req, res){
         
-        Article.findByIdAndUpdate(req.body.id, {status: req.body.status})
+        Article.findByIdAndUpdate(req.body.id, req.body)
         .then((article)=>{
             res.status(200).json({
                 message: 'success change article status'
