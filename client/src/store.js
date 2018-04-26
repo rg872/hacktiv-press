@@ -11,6 +11,10 @@ export default new Vuex.Store({
   mutations: {
     setAllArticles: function (state, articles) {
       state.allArticles = articles
+    },
+
+    setNewArticle: function (state, article) {
+      state.allArticles.push(article)
     }
   },
   actions: {
@@ -21,7 +25,7 @@ export default new Vuex.Store({
         })
         .catch((err) => {
           console.log(err)
-          alert('maaf ada kesalahan, silahkan tunggu beberapa waku lagi')
+          alert('sorry, theres an error in our system. Please try again in couple of minutes')
         })
     },
 
@@ -32,7 +36,7 @@ export default new Vuex.Store({
         })
         .catch((err) => {
           console.log(err)
-          alert('maaf ada kesalahan, silahkan tunggu beberapa waku lagi')
+          alert('sorry, theres an error in our system. Please try again in couple of minutes')
         })
     },
 
@@ -44,7 +48,19 @@ export default new Vuex.Store({
         })
         .catch((err) => {
           console.log(err)
-          alert('maaf ada kesalahan, silahkan tunggu beberapa waku lagi')
+          alert('sorry, theres an error in our system. Please try again in couple of minutes')
+        })
+    },
+
+    saveNewArticle: function (context, newArticle) {
+      axios.post('http://localhost:3000/articles/add', {token: localStorage.getItem('token'), article: newArticle})
+        .then((res) => {
+          let article = res.data.articles
+          context.commit('setNewArticle', article)
+        })
+        .catch((err) => {
+          console.log(err)
+          alert('sorry, theres an error in our system. Please try again in couple of minutes')
         })
     }
   }

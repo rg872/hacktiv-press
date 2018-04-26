@@ -7,19 +7,14 @@ module.exports = {
     addArticle: function(req, res){
         let decoded = decodeJwt.decoding(req.body.token);
      
-        let new_article = {
-            title: req.body.title,
-            content: req.body.content,
-            category: req.body.category
-        }  
+        let new_article = req.body.article
 
         Article.create(new_article)
         .then((article)=>{           
 
             User.findOne({email: decoded.email})
             .then((user)=>{
-                user.articles.push(article);
-                
+                user.articles.push(article);                
                 user.save()
                 .then((user)=>{
                     res.status(200).json({
@@ -31,6 +26,7 @@ module.exports = {
             
         })        
         .catch((error)=>{
+            console.log(error)
             res.status(500).json({
                 message: 'server error'
             })

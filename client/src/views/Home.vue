@@ -1,12 +1,33 @@
 <template>
   <div class="container">
     <h1>Welcome to Hacktiv-Press</h1>
-    <div class="col-5">
+    <div class="row">
+      <div class="col-5">
       <ul class="list-group">
-        <a class="list-group-item list-group-item-action" @click="showAllArticles">Show all article</a>
-        <a class="list-group-item list-group-item-action">Search article by Author</a>
-        <a class="list-group-item list-group-item-action">Search article by Category</a>
         <a class="list-group-item list-group-item-action" v-if="isTokenExist" data-toggle="modal" data-target="#createModal">Create New Article</a>
+        <br><br><br>
+        <h5>Filter Articles By:</h5>
+        <div class="form-group">
+          <label></label>
+          <select class="form-control" v-model="filter">
+            <option>All</option>
+            <option>Author</option>
+            <option>Category</option>
+          </select>
+        </div>
+        <div class="form-group" v-if="">
+          <label>Author</label>
+          <input type="text" class="form-control" placeholder="Insert the title of your article" v-model="title">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select class="form-control" v-model="category">
+            <option>News</option>
+            <option>Funny</option>
+            <option>Sports</option>
+            <option>Technology</option>
+          </select>
+        </div>
       </ul>
       <!-- Modal -->
       <div class="modal fade" id="createModal" tabindex="-1" role="dialog">
@@ -21,11 +42,11 @@
             <div class="modal-body">
                <div class="form-group">
                 <label>Title</label>
-                <input type="text" class="form-control" placeholder="Insert the title of your article">
+                <input type="text" class="form-control" placeholder="Insert the title of your article" v-model="title">
               </div>
               <div class="form-group">
                 <label>Category</label>
-                <select class="form-control">
+                <select class="form-control" v-model="category">
                   <option>News</option>
                   <option>Funny</option>
                   <option>Sports</option>
@@ -34,7 +55,7 @@
               </div>
               <div class="form-group">
                 <label>Content</label>
-                <textarea class="form-control" placeholder="Insert the content of your artcile" rows="3"></textarea>
+                <textarea class="form-control" placeholder="Insert the content of your artcile" rows="3" v-model="content"></textarea>
               </div>
             </div>
             <div class="modal-footer">
@@ -45,12 +66,9 @@
         </div>
       </div>
     </div>
-    <div class="col-7">
-      <div>
-        <div v-for="(article, index) in allArticles" :key="index">
-
-        </div>
-      </div>      
+    <div class="col-7 d-flex flex-wrap">
+       <router-view></router-view> 
+    </div>
     </div>
   </div>
 </template>
@@ -58,30 +76,45 @@
 <script>
 // @ is an alias to /src
 //import HelloWorld from '@/components/HelloWorld.vue'
-import { mapState } from 'vuex'
+import Articles from './components/Articles.vue'
 
 export default {
   name: 'home',
   components: {
-    //HelloWorld
+    Articles
   },
-  methods: {
-    showAllArticles: function () {
-      this.$store.dispatch('getAllarticles')
-    },
-    saveNewArticle: function () {
-      
-    },
-
-    isTokenExist: function () {
-      localStorage.getItem('token')
+  data: function () {
+    return {
+      title: '',
+      category: '',
+      content: '',
+      isTokenExist: false,
+      filter: 'all'
     }
   },
-  beforeCreate: function () {
-    this.$store.dispatch('getAllarticles')
+  methods: {
+    saveNewArticle: function () {
+      let newArticle = {
+        title : this.title,
+        category: this.category,
+        content: this.content
+      }
+
+        this.$store.dispatch('saveNewArticle', newArticle)
+    },
+    showAllArticles: function () {
+      this.$store.dispatch('getAllarticles')
+    }
   },
-  computed: mapState([
-    'allArticles'
-  ])
+  mounted: function () {
+    if (localStorage.getItem('token')) {
+        this.isTokenExist = true
+      }
+  }
 }
 </script>
+
+<style>
+
+</style>
+
