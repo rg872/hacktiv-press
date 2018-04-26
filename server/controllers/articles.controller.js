@@ -26,7 +26,6 @@ module.exports = {
             
         })        
         .catch((error)=>{
-            console.log(error)
             res.status(500).json({
                 message: 'server error'
             })
@@ -68,13 +67,12 @@ module.exports = {
     },
 
     getArticleByAuthor: function(req, res){
-        
-        User.find({name: req.params.name})
+        User.findOne({name: req.params.name})
         .populate('articles')
-        .then((article)=>{
+        .then((user)=>{
             res.status(200).json({
                 message: 'success get articles',
-                articles: article
+                articles: user.articles
             })
         })
         .catch((err)=>{
@@ -88,6 +86,7 @@ module.exports = {
         
         Article.find({category: req.params.category})
         .then((article)=>{
+            
             res.status(200).json({
                 message: 'success get articles',
                 articles: article

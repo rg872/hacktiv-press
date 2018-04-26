@@ -15,6 +15,10 @@ export default new Vuex.Store({
 
     setNewArticle: function (state, article) {
       state.allArticles.push(article)
+    },
+    setArticleFilter: function (state, filter) {
+      state.filterBy = filter.filterBy
+      state.filterValue = filter.filterValue
     }
   },
   actions: {
@@ -42,6 +46,30 @@ export default new Vuex.Store({
 
     getAllarticles: function (context) {
       axios.get('http://localhost:3000/articles/all')
+        .then((res) => {
+          let articles = res.data.articles
+          context.commit('setAllArticles', articles)
+        })
+        .catch((err) => {
+          console.log(err)
+          alert('sorry, theres an error in our system. Please try again in couple of minutes')
+        })
+    },
+
+    getAllarticlesByAuthor: function (context, author) {
+      axios.get('http://localhost:3000/articles/user/' + author)
+        .then((res) => {
+          let articles = res.data.articles
+          context.commit('setAllArticles', articles)
+        })
+        .catch((err) => {
+          console.log(err)
+          alert('sorry, theres an error in our system. Please try again in couple of minutes')
+        })
+    },
+
+    getAllarticlesByCategory: function (context, category) {
+      axios.get('http://localhost:3000/articles/category/' + category)
         .then((res) => {
           let articles = res.data.articles
           context.commit('setAllArticles', articles)

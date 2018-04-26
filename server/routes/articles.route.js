@@ -7,7 +7,7 @@ router.post('/add', ArticleController.addArticle);
 router.get('/all', ArticleController.getAllArticle);
 router.post('/user', ArticleController.getArticleByEmail);
 router.get('/user/:name', ArticleController.getArticleByAuthor);
-router.get('/user/:category', ArticleController.getArticleByCategory);
+router.get('/category/:category', ArticleController.getArticleByCategory);
 router.put('/update', ArticleController.updateArticleById);
 router.delete('/delete', ArticleController.deleteArticleById);
 
